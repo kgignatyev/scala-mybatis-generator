@@ -25,9 +25,9 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
       p.members.foreach(me=>{
         println(me)
         me.annotations.foreach(a=>{
-          println("ann::"+ a.getClass.getSuperclass + " " + a.annotationClass.name)
-          a.annotations.foreach( intann=>{
-            println( "intann " + intann+ " args " + intann.arguments)
+          println("ann::"+ a)
+          a.arguments.foreach( arg=>{
+            println( "arg::" + arg)
           })
         })
 
