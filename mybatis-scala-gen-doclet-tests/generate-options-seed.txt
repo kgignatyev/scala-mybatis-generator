@@ -2,4 +2,3 @@
 generated
 -doc-generator
 org.kgi.mybatis.scala.generator.doclet.MyBatisMappingDoclet
-src/main/scala/org/kgi/mybatis/generator/test/dbo/Person.scala

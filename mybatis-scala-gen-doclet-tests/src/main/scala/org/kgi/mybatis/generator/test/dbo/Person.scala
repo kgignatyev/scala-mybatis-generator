@@ -1,17 +1,16 @@
 package org.kgi.mybatis.generator.test.dbo
 
-import org.kgi.mybatis.scala.generator.doclet.DBO
+import org.kgi.mybatis.scala.generator.doclet.{table, mybSortBy, DBO}
 
 /** Created by
  * @author kgignatyev
  */
-@DBO("person" )
-class Person {
+@table("person" )
+class Person extends Identifiable{
 
-  var id:Long = _
 
-  var name:String = ""
-  var email:String = ""
+ @mybSortBy var name:String = ""
+ @mybSortBy var email:String = ""
 
 
 }
