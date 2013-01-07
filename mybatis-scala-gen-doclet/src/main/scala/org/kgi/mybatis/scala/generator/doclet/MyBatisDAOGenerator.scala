@@ -54,7 +54,14 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     if ("int".equals(r)) "Int" else if ("long".equals(r)) "Long" else if ("double".equals(r)) "Double" else r
   }
 
+  def makeOrderBy():String = {
+    if( gd.sortBy.isEmpty) {""} else {
+       gd.sortBy.mkString("ORDER BY ",",","")
+    }
+  }
+
   def generateEqFinder(out: PrintWriter, p: Prop2columnMapping) {
+    val ord = makeOrderBy()
     out.println( """
                    |val find%1$sBy_%2$s = new SelectOneBy[%4$s, %1$s] {
                    |    resultMap = result_Map
@@ -63,9 +70,10 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |      <xsql>
                    |        {SELECT_SQL}
                    |        WHERE %3$s = {"%2$s" ?}
+                   |        %5$s
                    |      </xsql>
                    |  }
-                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.propName, p.propType))
+                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.propName, p.propType, ord))
   }
 
   def generateLikeFinder(out: PrintWriter, p: Prop2columnMapping) {
@@ -77,9 +85,10 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |      <xsql>
                    |        {SELECT_SQL}
                    |        WHERE %3$s LIKE {"%2$s" ?}
+                   |        %5$s
                    |      </xsql>
                    |  }
-                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, getTypeName(p.propType)))
+                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, getTypeName(p.propType), makeOrderBy()))
   }
 
 

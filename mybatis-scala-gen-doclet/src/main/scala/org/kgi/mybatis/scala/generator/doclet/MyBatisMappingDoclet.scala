@@ -52,7 +52,10 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     gd.entityClassName = c.name
     gd.entityClassPackage = c.toRoot.filter(m => m.isPackage && (!m.isRootPackage)).map(dt => dt.name).reverse.mkString(".")
     gd.tableName = makeTableName(tableName)
-    gd.targetPackage = gd.entityClassPackage
+    gd.targetPackage = System.getProperty("myb-gen-destination-package",gd.entityClassPackage )
+    if( gd.targetPackage.equals(gd.entityClassPackage)){
+      println("Property [myb-gen-destination-package] is not defined, generating DAOs next to persistent classes")
+    }
 
     val variables = c.members.filter(m => m.isVar && !isCollection(m.resultType))
     val idOption = variables.find(v => {
@@ -62,9 +65,18 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
       v.annotations.find(a => "mybId".equals(a.name)).isEmpty
     })
 
+    val sortProperties = variables.filter(v => {
+          v.annotations.find(a => "mybSortBy".equals(a.name)).isDefined
+    }).map( v=> makeColName(v) )
+
+    if(idOption.isEmpty){
+      println("Persistent class must have [mybId] annotation on id field")
+    }
 
     gd.id = idOption.map(m => makeProp2ColMapping(m)).get
-    gd.properties ++= nonIdProperties.map(m => makeProp2ColMapping(m))
+    gd.properties ++= variables.map(m => makeProp2ColMapping(m))
+    gd.sortBy ++=sortProperties
+    gd.sortBy += gd.id.colName
     gd.destinationDir = System.getProperty("myb-gen-destination", "")
     val g = new MyBatisDAOGenerator(gd)
     if ("".equals(gd.destinationDir)) {
