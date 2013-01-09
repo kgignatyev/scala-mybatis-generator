@@ -73,7 +73,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |        %5$s
                    |      </xsql>
                    |  }
-                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.propName, p.propType, ord))
+                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType, ord))
   }
 
   def generateLikeFinder(out: PrintWriter, p: Prop2columnMapping) {
