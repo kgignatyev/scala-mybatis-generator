@@ -123,8 +123,8 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |    }
                    |}
                    | """.stripMargin.format(gd.tableName,
-      gd.properties.map(f => f.colName).mkString(", "),
-      gd.properties.map(f => "{ \"" + f.propName + "\" ?}").mkString(", "),
+      gd.noIdProperties.map(f => f.colName).mkString(", "),
+      gd.noIdProperties.map(f => "{ \"" + f.propName + "\" ?}").mkString(", "),
       gd.entityClassName,
       gd.id.propName
     ))
@@ -141,7 +141,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |    </xsql>
                    |  }
                  """.stripMargin.format(gd.entityClassName, gd.tableName,
-      gd.properties.map(f => f.colName + " = { \"" + f.propName + "\" ?}").mkString(",\n"),
+      gd.noIdProperties.map(f => f.colName + " = { \"" + f.propName + "\" ?}").mkString(",\n"),
       gd.id.colName, gd.id.propName
     )
     )

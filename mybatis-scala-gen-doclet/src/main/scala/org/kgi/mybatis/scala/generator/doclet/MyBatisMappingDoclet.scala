@@ -75,6 +75,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
 
     gd.id = idOption.map(m => makeProp2ColMapping(m)).get
     gd.properties ++= variables.map(m => makeProp2ColMapping(m))
+    gd.noIdProperties ++= nonIdProperties.map(m => makeProp2ColMapping(m))
     gd.sortBy ++=sortProperties
     gd.sortBy += gd.id.colName
     gd.destinationDir = System.getProperty("myb-gen-destination", "")
