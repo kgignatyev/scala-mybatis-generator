@@ -60,10 +60,26 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     }
   }
 
+  def generateIdFinder(out: PrintWriter, p: Prop2columnMapping) {
+      val ord = makeOrderBy()
+      out.println( """
+                     |val get%1$sBy_%2$s = new SelectOneBy[%4$s, %1$s] {
+                     |    resultMap = result_Map
+                     |
+                     |    def xsql =
+                     |      <xsql>
+                     |        {SELECT_SQL}
+                     |        WHERE %3$s = {"%2$s" ?}
+                     |        %5$s
+                     |      </xsql>
+                     |  }
+                     |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType, ord))
+    }
+
   def generateEqFinder(out: PrintWriter, p: Prop2columnMapping) {
     val ord = makeOrderBy()
     out.println( """
-                   |val find%1$sBy_%2$s = new SelectOneBy[%4$s, %1$s] {
+                   |val find%1$sBy_%2$s = new SelectListBy[%4$s, %1$s] {
                    |    resultMap = result_Map
                    |
                    |    def xsql =
@@ -78,7 +94,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
 
   def generateLikeFinder(out: PrintWriter, p: Prop2columnMapping) {
     out.println( """
-                   |val find%1$s_%2$s_like = new SelectOneBy[%4$s, %1$s] {
+                   |val find%1$s_%2$s_like = new SelectListBy[%4$s, %1$s] {
                    |    resultMap = result_Map
                    |
                    |    def xsql =
@@ -157,6 +173,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
 
     out.println("val bind = Seq(")
     out.println("insert,delete%1$sById,update,".format(gd.entityClassName))
+    out.println("get%1$sBy_%2$s,".format(gd.entityClassName,gd.id.propName))
     val items: Iterable[String] = fields.map(f => {
       "find%1$sBy_%2$s".format(gd.entityClassName, f.propName)
     })
@@ -192,7 +209,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     writeInsert(out)
     writeUpdate(out)
     writeDelete(out)
-
+    generateIdFinder(out, gd.id)
 
     gd.properties.foreach(p => {
       generateEqFinder(out, p)
