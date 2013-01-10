@@ -31,7 +31,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
   def writeResultMap(out: PrintWriter) {
     out.println("val result_Map = new ResultMap[" + gd.entityClassName + "] {")
     out.println("  id(column = \"%1$s\", property = \"%2$s\")".format(gd.id.colName, gd.id.propName))
-    gd.properties.foreach(p => {
+    gd.noIdProperties.foreach(p => {
       out.println("  result(column = \"%1$s\", property = \"%2$s\") ".format(p.colName, p.propName))
     })
     out.println("}")

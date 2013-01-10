@@ -28,9 +28,10 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     makeTableName(className)
   }
 
+  val primitives = List("Char","Double","Float","Int","Long","String")
   def isCollection(entity: TypeEntity): Boolean = {
     val n = entity.name
-    !("Long".equals(n) || "String".equals(n) || "Int".equals(n))
+    !(primitives.contains(n))
   }
 
   def makeColName(m: MemberEntity): String = {
@@ -57,7 +58,10 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
       println("Property [myb-gen-destination-package] is not defined, generating DAOs next to persistent classes")
     }
 
-    val variables = c.members.filter(m => m.isVar && !isCollection(m.resultType))
+    var variables = c.values.filter(m => m.isVar && !isCollection(m.resultType))
+
+    //variables ++= c.linearizationTypes.filter( te => { te.isClass } ).map( te=> te.asInstanceOf[model.Class].members).flatMap(l=>l)
+
     val idOption = variables.find(v => {
       v.annotations.find(a => "mybId".equals(a.name)).isDefined
     })
