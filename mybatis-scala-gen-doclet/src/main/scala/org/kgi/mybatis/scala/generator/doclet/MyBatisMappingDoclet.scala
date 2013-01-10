@@ -28,7 +28,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     makeTableName(className)
   }
 
-  val primitives = List("Char","Double","Float","Int","Long","String")
+  val primitives = List("Char","Double","Float","Int","Long","String","Date","Boolean")
   def isCollection(entity: TypeEntity): Boolean = {
     val n = entity.name
     !(primitives.contains(n))

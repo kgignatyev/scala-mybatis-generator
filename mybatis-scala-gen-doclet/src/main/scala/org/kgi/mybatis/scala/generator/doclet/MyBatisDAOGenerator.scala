@@ -20,6 +20,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     out.println("package " + gd.targetPackage +
             """|
               |import org.mybatis.scala.mapping._
+              |import java.util.Date
               |import %2$s.%1$s
               |import org.mybatis.scala.mapping.Binding._
               |
