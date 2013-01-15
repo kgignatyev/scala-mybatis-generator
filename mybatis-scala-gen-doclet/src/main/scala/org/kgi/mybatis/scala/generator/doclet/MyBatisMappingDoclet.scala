@@ -2,7 +2,7 @@ package org.kgi.mybatis.scala.generator.doclet
 
 import scala.tools.nsc.doc.doclet._
 import tools.nsc.doc.model
-import model.{TypeEntity, ValueArgument, MemberEntity}
+import model.{Val, TypeEntity, ValueArgument, MemberEntity}
 import java.io.{PrintWriter, StringWriter}
 
 
@@ -28,10 +28,10 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     makeTableName(className)
   }
 
-  val primitives = List("Char","Double","Float","Int","Long","String","Date","Boolean")
+  val nonCollections = List("Char","Double","Float","Int","Long","String","Date","DateTime","Boolean")
   def isCollection(entity: TypeEntity): Boolean = {
     val n = entity.name
-    !(primitives.contains(n))
+    !(nonCollections.contains(n))
   }
 
   def makeColName(m: MemberEntity): String = {
@@ -44,7 +44,13 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
   }
 
   def makeProp2ColMapping(m: MemberEntity): Prop2columnMapping = {
-    new Prop2columnMapping(m.name, makeColName(m), m.resultType.name)
+
+    val resultType: TypeEntity = m.resultType
+    val pack = resultType.refEntity
+    val typeName = if ( pack.size == 0) resultType.name else {
+      pack.head._2._1.qualifiedName
+    }
+    new Prop2columnMapping(m.name, makeColName(m), typeName)
   }
 
   def generateDAO(c: model.Class, tableName: String) {
@@ -71,7 +77,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
 
     val sortProperties = variables.filter(v => {
           v.annotations.find(a => "mybSortBy".equals(a.name)).isDefined
-    }).map( v=> makeColName(v) )
+    }).map( v=> (makeColName(v),defineSortOf(v)) )
 
     if(idOption.isEmpty){
       println("Persistent class must have [mybId] annotation on id field")
@@ -80,8 +86,8 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     gd.id = idOption.map(m => makeProp2ColMapping(m)).get
     gd.properties ++= variables.map(m => makeProp2ColMapping(m))
     gd.noIdProperties ++= nonIdProperties.map(m => makeProp2ColMapping(m))
-    gd.sortBy ++=sortProperties
-    gd.sortBy += gd.id.colName
+    gd.sortBy ++= sortProperties
+    gd.sortBy += ((gd.id.colName,"ASC"))
     gd.destinationDir = System.getProperty("myb-gen-destination", "")
     val g = new MyBatisDAOGenerator(gd)
     if ("".equals(gd.destinationDir)) {
@@ -94,17 +100,25 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     }
   }
 
+  def defineSortOf( v:Val ):String = {
+    val annArgs = v.annotations.find(a => "mybSortBy".equals(a.name) ).map( a=> a.arguments )
+    annArgs.map( args=> args.head.value).map( treeEnt=> treeEnt.expression ).map( exp=> {
+      if ( exp.contains("default")) "ASC" else exp.replaceAll("[\"'*]","")
+    }).getOrElse("ASC")
+  }
+
   def investigate(p: model.Package) {
-    println("investigating::" + p)
+   // println("investigating::" + p)
     p.packages.foreach(mp => {
       investigate(mp)
     })
 
     p.members.foreach(me => {
       if (me.isInstanceOf[model.Class]) {
-        println("class:" + me)
+
         val c = me.asInstanceOf[model.Class]
         me.annotations.find(a => "table".eq(a.annotationClass.name)).foreach(a => {
+          println("generating DAO for class:" + me)
           //now we have annotated with table class and can generate dao
           generateDAO(me.asInstanceOf[model.Class], defineTableName(me.name, a.arguments))
         })

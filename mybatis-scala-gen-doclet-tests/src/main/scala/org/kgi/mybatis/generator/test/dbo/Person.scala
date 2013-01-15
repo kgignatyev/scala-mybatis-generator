@@ -1,16 +1,18 @@
 package org.kgi.mybatis.generator.test.dbo
 
 import org.kgi.mybatis.scala.generator.doclet.{table, mybSortBy}
+import java.util.Date
 
 /** Created by
  * @author kgignatyev
  */
 @table("person" )
-class Person  extends Serializable with Identifiable with Loc{
+class Person  extends Loc{
 
 
- @mybSortBy var name:String = ""
- @mybSortBy var email:String = ""
+ var name:String = ""
+ @mybSortBy(order = "DESC") var email:String = ""
 
+  var date:Date = _
 
 }
