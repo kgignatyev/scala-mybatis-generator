@@ -111,6 +111,20 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, getTypeName(p.propType), makeOrderBy()))
   }
 
+  def generateEqDelete(out: PrintWriter, p: Prop2columnMapping) {
+      out.println( """
+                     |val delete%1$sBy_%2$s = new Delete[%4$s] {
+                     |
+                     |
+                     |    def xsql =
+                     |      <xsql>
+                     |        DELETE FROM %2$s
+                     |        WHERE %3$s = {"%2$s" ?}
+                     |
+                     |      </xsql>
+                     |  }
+                     |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType))
+    }
 
   def writeDelete(out: PrintWriter) {
     out.println(
@@ -182,11 +196,17 @@ class MyBatisDAOGenerator(gd: GenerationData) {
       "find%1$sBy_%2$s".format(gd.entityClassName, f.propName)
     })
 
+
+
     val items2: Iterable[String] = stringFields.map(f => {
       "find%1$s_%2$s_like".format(gd.entityClassName, f.propName)
     })
 
-    out.println(List(items, items2).flatMap(f => f).mkString(", \n"))
+    val itemsDelete: Iterable[String] = fields.map(f => {
+          "delete%1$sBy_%2$s".format(gd.entityClassName, f.propName)
+    })
+
+    out.println(List(items, items2,itemsDelete).flatMap(f => f).mkString(", \n"))
 
     out.println(")")
   }
@@ -217,6 +237,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
 
     gd.properties.foreach(p => {
       generateEqFinder(out, p)
+      generateEqDelete(out, p)
     })
 
     val stringProperties: ArrayBuffer[Prop2columnMapping] = gd.properties.filter(f => f.propType.endsWith("String"))
