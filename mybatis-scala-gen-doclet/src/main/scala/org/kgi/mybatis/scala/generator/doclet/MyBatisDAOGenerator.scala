@@ -118,12 +118,12 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                      |
                      |    def xsql =
                      |      <xsql>
-                     |        DELETE FROM %2$s
+                     |        DELETE FROM %5$s
                      |        WHERE %3$s = {"%2$s" ?}
                      |
                      |      </xsql>
                      |  }
-                     |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType))
+                     |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType,gd.tableName))
     }
 
   def writeDelete(out: PrintWriter) {
