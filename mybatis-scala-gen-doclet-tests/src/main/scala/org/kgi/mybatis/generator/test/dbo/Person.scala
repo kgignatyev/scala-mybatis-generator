@@ -1,6 +1,6 @@
 package org.kgi.mybatis.generator.test.dbo
 
-import org.kgi.mybatis.scala.generator.doclet.{table, mybSortBy}
+import org.kgi.mybatis.scala.generator.doclet.{mybIgnore, table, mybSortBy}
 import java.util.Date
 
 /** Created by
@@ -14,5 +14,8 @@ class Person  extends Loc{
  @mybSortBy(order = "DESC") var email:String = ""
 
   var date:Date = _
+
+  @mybIgnore
+  var ignorable:String = _
 
 }

@@ -72,7 +72,8 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
       v.annotations.find(a => "mybId".equals(a.name)).isDefined
     })
     val nonIdProperties = variables.filter(v => {
-      v.annotations.find(a => "mybId".equals(a.name)).isEmpty
+      v.annotations.find(a => "mybId".equals(a.name)).isEmpty  && v.annotations.find(a => "mybIgnore".equals(a.name)).isEmpty
+
     })
 
     val sortProperties = variables.filter(v => {
