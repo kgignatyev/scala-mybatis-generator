@@ -25,7 +25,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
   }
 
   def defineTableName(className: String, annotationArguments: List[ValueArgument]): String = {
-    makeTableName(className)
+    annotationArguments.filter(tn=> tn.value.expression.indexOf("$default")== -1).headOption.map( tn=> tn.value.expression.replaceAll("['\"]","") ).getOrElse( makeTableName(className) )
   }
 
   val nonCollections = List("Char","Double","Float","Int","Long","String","Date","DateTime","Boolean")

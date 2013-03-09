@@ -6,7 +6,7 @@ import java.util.Date
 /** Created by
  * @author kgignatyev
  */
-@table("person" )
+@table
 class Person  extends Loc{
 
 
