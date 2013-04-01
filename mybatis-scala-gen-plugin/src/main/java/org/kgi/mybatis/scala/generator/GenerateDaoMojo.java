@@ -84,7 +84,7 @@ public class GenerateDaoMojo extends AbstractMojo {
 
             File sourcesDir = new File(project.getBasedir(), "src" + File.separator + "main");
             getLog().info("sources located in:" + sourcesDir.getAbsolutePath());
-            Collection<File> sourceFiles = FileUtils.listFiles(sourcesDir, new String[]{"scala"}, true);
+            Collection<File> sourceFiles = FileUtils.listFiles(sourcesDir, new String[]{"scala","java"}, true);
 
             PrintWriter scaladocParamFileWriter = new PrintWriter(new FileWriter(scaladocParamFileName));
             scaladocParamFileWriter.println("-d");
