@@ -2,7 +2,7 @@ package org.kgi.mybatis.scala.generator.doclet
 
 import scala.tools.nsc.doc.doclet._
 import tools.nsc.doc.model
-import model.{Val, TypeEntity, ValueArgument, MemberEntity}
+import scala.tools.nsc.doc.model._
 import java.io.{PrintWriter, StringWriter}
 
 
@@ -47,9 +47,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
 
     val resultType: TypeEntity = m.resultType
     val pack = resultType.refEntity
-    val typeName = if ( pack.size == 0) resultType.name else {
-      pack.head._2._1.qualifiedName
-    }
+    val typeName = m.qualifiedName
     new Prop2columnMapping(m.name, makeColName(m), typeName)
   }
 
@@ -57,14 +55,14 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     val gd = new GenerationData()
 
     gd.entityClassName = c.name
-    gd.entityClassPackage = c.toRoot.filter(m => m.isPackage && (!m.isRootPackage)).map(dt => dt.name).reverse.mkString(".")
+    gd.entityClassPackage = c.toRoot.filter(m => m.asInstanceOf[DocTemplateEntity].isPackage && (!m.asInstanceOf[DocTemplateEntity].isRootPackage)).map(dt => dt.name).reverse.mkString(".")
     gd.tableName = makeTableName(tableName)
     gd.targetPackage = System.getProperty("myb-gen-destination-package",gd.entityClassPackage )
     if( gd.targetPackage.equals(gd.entityClassPackage)){
       println("Property [myb-gen-destination-package] is not defined, generating DAOs next to persistent classes")
     }
 
-    var variables = c.values.filter(m => m.isVar && !isCollection(m.resultType))
+    var variables = c.asInstanceOf[DocTemplateEntity].values.filter(m => m.isVar && !isCollection(m.resultType))
 
     //variables ++= c.linearizationTypes.filter( te => { te.isClass } ).map( te=> te.asInstanceOf[model.Class].members).flatMap(l=>l)
 

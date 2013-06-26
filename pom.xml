@@ -1,132 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kgi.mybatis.scala.generator</groupId>
     <artifactId>mybatis-scala-gen</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-2.10-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>https://github.com/kgignatyev/scala-mybatis-generator</url>
+    <modules>
+        <module>mybatis-scala-gen-doclet</module>
+        <module>mybatis-scala-gen-doclet-tests</module>
+        <module>mybatis-scala-gen-plugin</module>
+    </modules>
 
-	<modules>
-	            <module>mybatis-scala-gen-doclet</module>
-	            <module>mybatis-scala-gen-doclet-tests</module>
-    <module>mybatis-scala-gen-plugin</module>
-  </modules>
- 
-	    <properties>
-
-
-	        <joda-convert.version>1.2</joda-convert.version>
-	        <joda-time.version>2.1</joda-time.version>
-	        <jets3.version>0.9.0</jets3.version>
-	        <junit-version>4.10</junit-version>
-
-	        <plugin.compiler>2.3.2</plugin.compiler>
-	        <plugin.javadoc>2.8.1</plugin.javadoc>
-	        <plugin.source>2.1.2</plugin.source>
-	        <plugin.surefire>2.12</plugin.surefire>
-	        <slf4j-version>1.6.6</slf4j-version>
-	        <scala.version>2.9.3</scala.version>
+    <properties>
 
 
+        <joda-convert.version>1.2</joda-convert.version>
+        <joda-time.version>2.1</joda-time.version>
+        <jets3.version>0.9.0</jets3.version>
+        <junit-version>4.10</junit-version>
 
-	        <failIfNoTests>false</failIfNoTests>
-	    </properties>
-
-	    <dependencies>
-	        
-	        <dependency>
-	            <groupId>org.scala-lang</groupId>
-	            <artifactId>scala-library</artifactId>
-	            <version>${scala.version}</version>
-	        </dependency>
-
-	        <dependency>
-	            <groupId>org.scala-tools.testing</groupId>
-	            <artifactId>specs_2.9.2</artifactId>
-	            <version>1.6.9</version>
-	            <scope>test</scope>
-	        </dependency>
-	    </dependencies>
-	    <build>
-	        <plugins>
-	            <plugin>
-	                <groupId>net.alchim31.maven</groupId>
-	                    <artifactId>scala-maven-plugin</artifactId>
-	                    <version>3.1.0</version>
+        <plugin.compiler>2.3.2</plugin.compiler>
+        <plugin.javadoc>2.8.1</plugin.javadoc>
+        <plugin.source>2.1.2</plugin.source>
+        <plugin.surefire>2.12</plugin.surefire>
+        <slf4j-version>1.6.6</slf4j-version>
+        <scala.version>2.10.2</scala.version>
 
 
-	                <executions>
-	                    <execution>
-	                        <id>compile</id>
-	                        <goals>
-	                            <goal>compile</goal>
-	                        </goals>
-	                        <phase>compile</phase>
-	                    </execution>
-	                    <execution>
-	                        <id>test-compile</id>
-	                        <goals>
-	                            <goal>testCompile</goal>
-	                        </goals>
-	                        <phase>test-compile</phase>
-	                    </execution>
-	                    <execution>
-	                        <phase>process-resources</phase>
-	                        <goals>
-	                            <goal>compile</goal>
-	                        </goals>
-	                    </execution>
-	                </executions>
-	                <configuration>
-	                    <scalaVersion>${scala.version}</scalaVersion>
-	                    <recompileMode>incremental</recompileMode>
-	                    <useZincServer>true</useZincServer>
-	                    <jvmArgs>
-	                        <jvmArg>-Xms124m</jvmArg>
-	                        <jvmArg>-Xmx2048m</jvmArg>
-	                    </jvmArgs>
+        <failIfNoTests>false</failIfNoTests>
+    </properties>
 
-	                    <!--<args>-->
-	                        <!--<arg>-target:jvm-1.5</arg>-->
+    <dependencies>
 
-	                        <!--&lt;!&ndash; to support mix java/scala only &ndash;&gt;-->
-	                        <!--&lt;!&ndash;<arg>-make:transitivenocp</arg>&ndash;&gt;-->
-	                        <!--<arg>-dependencyfile</arg>-->
-	                        <!--<arg>${project.build.directory}/.scala_dependencies</arg>-->
-	                    <!--</args>-->
-	                </configuration>
-	            </plugin>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
 
-	            <plugin>
-	                <groupId>org.apache.maven.plugins</groupId>
-	                <artifactId>maven-surefire-plugin</artifactId>
-	                <version>2.12</version>
-	                <configuration>
-	                    <includes>
-	                        <include>**/*Spec.class</include>
-	                    </includes>
-	                </configuration>
-	            </plugin>
+        <dependency>
+            <groupId>org.scala-tools.testing</groupId>
+            <artifactId>specs_2.10</artifactId>
+            <version>1.6.9</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.0</version>
 
 
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                    <recompileMode>incremental</recompileMode>
+                    <useZincServer>true</useZincServer>
+                    <jvmArgs>
+                        <jvmArg>-Xms124m</jvmArg>
+                        <jvmArg>-Xmx2048m</jvmArg>
+                    </jvmArgs>
 
-	        </plugins>
-	    </build>
+                    <!--<args>-->
+                    <!--<arg>-target:jvm-1.5</arg>-->
+
+                    <!--&lt;!&ndash; to support mix java/scala only &ndash;&gt;-->
+                    <!--&lt;!&ndash;<arg>-make:transitivenocp</arg>&ndash;&gt;-->
+                    <!--<arg>-dependencyfile</arg>-->
+                    <!--<arg>${project.build.directory}/.scala_dependencies</arg>-->
+                    <!--</args>-->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Spec.class</include>
+                    </includes>
+                </configuration>
+            </plugin>
 
 
-	    <repositories>
-	        <repository>
-	            <id>scala-tools.org</id>
-	            <name>Scala-Tools Maven2 Repository</name>
-	            <url>http://repo.typesafe.com/typesafe/scala-tools-releases-cache</url>
-	        </repository>
-	        <repository>
-	            <id>typesafe</id>
-	            <name>Typesafe Repository</name>
-	            <url>http://repo.typesafe.com/typesafe/releases/</url>
-	        </repository>
-	    </repositories>
-	
+        </plugins>
+    </build>
+
+
+    <repositories>
+        <repository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://repo.typesafe.com/typesafe/scala-tools-releases-cache</url>
+        </repository>
+        <repository>
+            <id>typesafe</id>
+            <name>Typesafe Repository</name>
+            <url>http://repo.typesafe.com/typesafe/releases/</url>
+        </repository>
+    </repositories>
 
 
 </project>

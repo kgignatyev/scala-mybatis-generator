@@ -1,6 +1,6 @@
 package org.kgi.mybatis.scala.generator.doclet
 
-import annotation.target.getter
+import scala.annotation.meta.getter
 
 /**
  * do not use field in the myBatis mappings

@@ -4,18 +4,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kgi.mybatis.scala.generator</groupId>
     <artifactId>mybatis-scala-gen-doclet-tests</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>org.kgi.mybatis.scala.generator</groupId>
         <artifactId>mybatis-scala-gen</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-2.10-SNAPSHOT</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>org.kgi.mybatis.scala.generator</groupId>
             <artifactId>mybatis-scala-gen-doclet</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-2.10-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
