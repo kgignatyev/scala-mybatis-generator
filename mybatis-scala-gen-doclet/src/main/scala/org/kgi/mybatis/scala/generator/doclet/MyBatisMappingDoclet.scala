@@ -47,7 +47,7 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
 
     val resultType: TypeEntity = m.resultType
     val pack = resultType.refEntity
-    val typeName = m.qualifiedName
+    val typeName = resultType.name
     new Prop2columnMapping(m.name, makeColName(m), typeName)
   }
 
@@ -83,6 +83,9 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
     }
 
     gd.id = idOption.map(m => makeProp2ColMapping(m)).get
+    val idAnnotation = idOption.get.annotations.find(a => "mybId".equals(a.name))
+    val b = idAnnotation.map( a=> a.arguments.exists(arg=> "true".equalsIgnoreCase(arg.value.expression))).getOrElse(false)
+    gd.manualId = b
     gd.properties ++= variables.map(m => makeProp2ColMapping(m))
     gd.noIdProperties ++= nonIdProperties.map(m => makeProp2ColMapping(m))
     gd.sortBy ++= sortProperties

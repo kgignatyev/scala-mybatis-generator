@@ -14,6 +14,7 @@ class GenerationData {
   var entityClassPackage = ""
   var entityClassName = ""
   var id:Prop2columnMapping = _
+  var manualId = false
   val sortBy = new mutable.ArrayBuffer[(String,String)]()
   val properties = new mutable.ArrayBuffer[Prop2columnMapping]()
   val noIdProperties = new mutable.ArrayBuffer[Prop2columnMapping]()

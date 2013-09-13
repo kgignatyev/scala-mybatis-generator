@@ -8,6 +8,6 @@ import scala.annotation.meta.getter
  */
 //by some strange reasons @field annotation does not visible to scaladocs
 @getter
-class mybId extends scala.annotation.StaticAnnotation{
+class mybId(var manual:Boolean = false) extends scala.annotation.StaticAnnotation{
 
 }

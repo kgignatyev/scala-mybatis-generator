@@ -145,7 +145,7 @@ class MyBatisDAOGenerator(gd: GenerationData) {
 
   def writeInsert(out: PrintWriter) {
 
-    if ("String".equals(gd.id.propType)) {
+    if ("String".equals(gd.id.propType)||gd.manualId) {
       out.println( """
                      |val insert = new Insert[%4$s] {
                      |def xsql =
@@ -203,12 +203,6 @@ class MyBatisDAOGenerator(gd: GenerationData) {
   }
 
   def generateBind(out: PrintWriter, fields: Iterable[Prop2columnMapping], stringFields: Iterable[Prop2columnMapping]) {
-    """val bind = Seq(findPersonById, findPersonByUserID,findPersonByEmail,
-      |    findPeopleWithEmailLike,
-      |    deleteUserById, deleteUserSelections,deleteUserSelection,
-      |    insertPerson,insertUserSelection,findUserSelection,
-      |    updatePerson)
-      | """
 
     out.println("val bind = Seq(")
     out.println("insert,delete%1$sById,update,".format(gd.entityClassName))

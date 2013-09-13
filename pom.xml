@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kgi.mybatis.scala.generator</groupId>
     <artifactId>mybatis-scala-gen</artifactId>
-    <version>1.0-${scala.binary}-SNAPSHOT</version>
+    <version>1.0-2.10-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://github.com/kgignatyev/scala-mybatis-generator</url>
     <modules>
@@ -42,10 +42,16 @@
         </dependency>
 
         <dependency>
-            <groupId>org.scala-tools.testing</groupId>
-            <artifactId>specs_2.10</artifactId>
-            <version>1.6.9</version>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.10</artifactId>
+            <version>1.9.2</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
