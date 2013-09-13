@@ -21,4 +21,4 @@ class GenerationData {
 
 }
 
-class Prop2columnMapping( val propName:String, val colName:String, val propType:String)
+class Prop2columnMapping( val propName:String, val colName:String, val propType:String, val propFullType:String)

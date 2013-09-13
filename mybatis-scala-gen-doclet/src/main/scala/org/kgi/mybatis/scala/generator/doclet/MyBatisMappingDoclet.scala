@@ -4,6 +4,8 @@ import scala.tools.nsc.doc.doclet._
 import tools.nsc.doc.model
 import scala.tools.nsc.doc.model._
 import java.io.{PrintWriter, StringWriter}
+import scala.collection.{SortedMap}
+import scala.tools.nsc.doc.base.Tooltip
 
 
 /**
@@ -46,9 +48,10 @@ class MyBatisMappingDoclet extends Generator with Universer with Indexer {
   def makeProp2ColMapping(m: MemberEntity): Prop2columnMapping = {
 
     val resultType: TypeEntity = m.resultType
-    val pack = resultType.refEntity
+    val pack:SortedMap[Int,(scala.tools.nsc.doc.base.LinkTo, Int)] = resultType.refEntity
+    val fullTypeName = pack(0)._1.asInstanceOf[Tooltip].name
     val typeName = resultType.name
-    new Prop2columnMapping(m.name, makeColName(m), typeName)
+    new Prop2columnMapping(m.name, makeColName(m), typeName, fullTypeName)
   }
 
   def generateDAO(c: model.Class, tableName: String) {

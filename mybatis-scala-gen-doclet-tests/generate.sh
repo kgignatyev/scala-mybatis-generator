@@ -11,4 +11,4 @@ cp -f generate-options-seed.txt generate-options.txt
 find src -name "*.scala" >> generate-options.txt
 
 
-scaladoc  -Dmyb-gen-destination=generated -toolcp ../mybatis-scala-gen-doclet/target/mybatis-scala-gen-doclet-1.0-2.10-SNAPSHOT.jar @generate-options.txt
+scaladoc  -Dmyb-gen-destination=generated -cp ~/.m2/repository/joda-time/joda-time/2.2/joda-time-2.2.jar   -toolcp ../mybatis-scala-gen-doclet/target/mybatis-scala-gen-doclet-1.0-2.10-SNAPSHOT.jar @generate-options.txt
