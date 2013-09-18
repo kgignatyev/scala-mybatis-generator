@@ -102,8 +102,9 @@ class MyBatisDAOGenerator(gd: GenerationData) {
 
   def generateEqFinder(out: PrintWriter, p: Prop2columnMapping) {
     val ord = makeOrderBy()
+    def generateEq(byPage:String){
     out.println( """
-                   |val find%1$sBy_%2$s = new SelectListBy[%4$s, %1$s] {
+                   |val find%1$s%6$sBy_%2$s = new SelectList%6$sBy[%4$s, %1$s] {
                    |    resultMap = result_Map
                    |
                    |    def xsql =
@@ -113,12 +114,17 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |        %5$s
                    |      </xsql>
                    |  }
-                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType, ord))
+                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, p.propType, ord, byPage))
+    }
+
+    generateEq("")
+    generateEq("Page")
   }
 
   def generateLikeFinder(out: PrintWriter, p: Prop2columnMapping) {
+    def generateLike(byPage:String){
     out.println( """
-                   |val find%1$s_%2$s_like = new SelectListBy[%4$s, %1$s] {
+                   |val find%1$s%6$s_%2$s_like = new SelectList%6$sBy[%4$s, %1$s] {
                    |    resultMap = result_Map
                    |
                    |    def xsql =
@@ -128,7 +134,11 @@ class MyBatisDAOGenerator(gd: GenerationData) {
                    |        %5$s
                    |      </xsql>
                    |  }
-                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, getTypeName(p.propType), makeOrderBy()))
+                   |  """.stripMargin.format(gd.entityClassName, p.propName, p.colName, getTypeName(p.propType), makeOrderBy(),byPage))
+    }
+
+    generateLike("")
+    generateLike("Page")
   }
 
   def generateEqDelete(out: PrintWriter, p: Prop2columnMapping) {
