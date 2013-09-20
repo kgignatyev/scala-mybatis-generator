@@ -230,8 +230,14 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     )
   }
 
+  /**
+   *
+   * @param out
+   * @param fields
+   * @param stringFields
+   */
   def generateBind(out: PrintWriter, fields: Iterable[Prop2columnMapping], stringFields: Iterable[Prop2columnMapping]) {
-
+    // todo:  this method should take list of methods generated and put them in sequence
     out.println("val bind = Seq(")
     out.println("insert,delete%1$sById,update,".format(gd.entityClassName))
     out.println("get%1$sBy_%2$s,".format(gd.entityClassName, gd.id.propName))
