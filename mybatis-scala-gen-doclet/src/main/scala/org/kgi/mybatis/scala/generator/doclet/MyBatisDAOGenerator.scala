@@ -236,14 +236,20 @@ class MyBatisDAOGenerator(gd: GenerationData) {
     out.println("insert,delete%1$sById,update,".format(gd.entityClassName))
     out.println("get%1$sBy_%2$s,".format(gd.entityClassName, gd.id.propName))
     val items: Iterable[String] = fields.map(f => {
-      "find%1$sBy_%2$s".format(gd.entityClassName, f.propName)
-    })
+      List(
+        "find%1$sBy_%2$s".format(gd.entityClassName, f.propName),
+        "find%1$sPageBy_%2$s".format(gd.entityClassName, f.propName)
+      )
+    }).flatMap(l=>l)
 
 
 
     val items2: Iterable[String] = stringFields.map(f => {
-      "find%1$s_%2$s_like".format(gd.entityClassName, f.propName)
-    })
+      List(
+      "find%1$s_%2$s_like".format(gd.entityClassName, f.propName),
+      "find%1$sPage_%2$s_like".format(gd.entityClassName, f.propName)
+      )
+    }).flatMap(l=>l)
 
     val itemsDelete: Iterable[String] = fields.map(f => {
       "delete%1$sBy_%2$s".format(gd.entityClassName, f.propName)
